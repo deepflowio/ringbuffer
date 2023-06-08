@@ -74,7 +74,7 @@ mod with_alloc;
 #[cfg(feature = "alloc")]
 pub use with_alloc::AllocRingBuffer;
 #[cfg(feature = "alloc")]
-pub use with_alloc::RINGBUFFER_DEFAULT_CAPACITY;
+pub use with_alloc::{NonPowerOfTwo, PowerOfTwo, RINGBUFFER_DEFAULT_CAPACITY};
 
 mod with_const_generics;
 pub use with_const_generics::ConstGenericRingBuffer;
