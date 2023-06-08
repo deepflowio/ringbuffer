@@ -74,6 +74,9 @@ pub trait RingBufferRead<T>: RingBuffer<T> {
     /// If the ringbuffer is empty, this function is a nop.
     fn skip(&mut self);
 
+    /// read ptr add n, it will not drop the element immediately in the ringbuf.
+    fn skip_n(&mut self, n: usize);
+
     /// Returns an iterator over the elements in the ringbuffer,
     /// dequeueing elements as they are iterated over.
     ///
@@ -397,6 +400,13 @@ macro_rules! impl_ringbuffer_read {
         #[inline]
         fn skip(&mut self) {
             let _ = self.dequeue().map(drop);
+        }
+
+        fn skip_n(&mut self, n: usize) {
+            if n > self.len() {
+                panic!("ringbuffer skip out of length");
+            }
+            self.readptr += n;
         }
     };
 }
