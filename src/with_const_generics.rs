@@ -171,6 +171,10 @@ impl<T, const CAP: usize> RingBufferWrite<T> for ConstGenericRingBuffer<T, CAP> 
         self.buf[index] = MaybeUninit::new(value);
         self.writeptr += 1;
     }
+
+    fn extend_from<I: IntoIterator<Item = T>>(&mut self, _idx: usize, _value: I) {
+        unimplemented!()
+    }
 }
 
 unsafe impl<T, const CAP: usize> RingBufferExt<T> for ConstGenericRingBuffer<T, CAP> {

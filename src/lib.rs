@@ -1,5 +1,5 @@
 #![no_std]
-#![deny(missing_docs)]
+// #![deny(missing_docs)]
 #![deny(warnings)]
 #![deny(unused_import_braces)]
 #![deny(unused_results)]

@@ -196,6 +196,30 @@ impl<T, MODE: RingbufferMode> RingBufferWrite<T> for AllocRingBuffer<T, MODE> {
 
         self.writeptr += 1;
     }
+
+    fn extend_from<A: IntoIterator<Item = T>>(&mut self, idx: usize, value: A) {
+        if idx > self.len() {
+            panic!("ringbuf extend from out of length");
+        }
+
+        let mut count = 0;
+        for v in value {
+            if idx + count > self.capacity {
+                panic!("ringbuf extend from exceed capacity");
+            }
+            let index = MODE::mask(self.capacity, self.readptr + idx + count);
+            if index >= self.buf.len() {
+                self.buf.push(MaybeUninit::new(v));
+            } else {
+                self.buf[index] = MaybeUninit::new(v);
+            }
+
+            if idx + count == self.len() {
+                self.writeptr += 1;
+            }
+            count += 1;
+        }
+    }
 }
 
 impl<T, MODE: RingbufferMode> RingBuffer<T> for AllocRingBuffer<T, MODE> {

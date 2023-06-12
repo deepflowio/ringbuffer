@@ -62,6 +62,8 @@ pub trait RingBufferWrite<T>: RingBuffer<T> + Extend<T> {
     fn enqueue(&mut self, value: T) {
         self.push(value);
     }
+
+    fn extend_from<I: IntoIterator<Item = T>>(&mut self, idx: usize, value: I);
 }
 
 /// Defines behaviour for ringbuffers which allow for reading from the start of them (as a queue).
